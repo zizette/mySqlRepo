@@ -1,0 +1,208 @@
+# mysql -u root -p
+Enter password:
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 29
+Server version: 10.4.28-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> USE schoolDB
+ERROR 1049 (42000): Unknown database 'schooldb'
+Challenge 1:
+MariaDB [(none)]> CREATE DATABASE  schoolDB;
+Query OK, 1 row affected (0.003 sec)
+MariaDB [(none)]> use schoolDB
+Database changed
+MariaDB [schoolDB]> SHOW DATABASES
+    ->
+    MariaDB [(none)]> use schoolDB
+Database changed
+MariaDB [schoolDB]> SHOW DATABASES
+    ->
+    -> SHOW DATABASES
+    -> USE schoolDB
+    -> SHOW DATABASES
+    -> SHOW DATABASES;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'SHOW DATABASES
+USE schoolDB
+MariaDB [schoolDB]> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| fatafeetco         |
+| information_schema |
+| labscenter         |
+| mysql              |
+| performance_schema |
+| phpmyadmin         |
+| schooldb           |
+| test               |
+| z2learning         |
+| zelearning         |
+| zeportfolio        |
+| zeportfolio2       |
++--------------------+
+12 rows in set (0.004 sec)
+
+MariaDB [schoolDB]>
+    ->
+    Challenge 2:
+     create table teachers(id integer, first_name text, last_name text, subject text);
+Query OK, 0 rows affected (0.010 sec)
+MariaDB [teachers]> INSERT INTO teachers(id, first_name, last_name, subject)
+    -> VALUES (1, 'John', 'Doe', 'Math'),
+    ->        (2, 'Jane', 'Smith', 'Science');
+Query OK, 2 rows affected (0.006 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+    ->
+    Challenge 3:
+
+
+MariaDB [schooldb]> select * from teachers;
++------+------------+-----------+---------+
+| id   | first_name | last_name | subject |
++------+------------+-----------+---------+
+|    1 | John       | Doe       | Math    |
+|    2 | Jane       | Smith     | Science |
+|    3 | layla      | Kara      | Sports  |
++------+------------+-----------+---------+
+3 rows in set (0.002 sec)
+
+
+2 rows in set (0.006 sec)
+MariaDB [teachers]> select students.first_name, teachers.first_name from students inner join teachers on students.teacher_id=teachers.id;
++------------+------------+
+| first_name | first_name |
++------------+------------+
+| Alice      | John       |
+| Bob        | Jane       |
++------------+------------+
+2 rows in set (0.006 sec)
+
+
+    --------------------------
+    Challenge 4:
+    --------------------------
+    MariaDB [(none)]> use schooldb
+Database changed
+MariaDB [schooldb]> CREATE TABLE students(
+    ->     id INT PRIMARY KEY,
+    ->     first_name VARCHAR(50),
+    ->     last_name VARCHAR(50),
+    ->     teacher_id INT
+    -> );
+Query OK, 0 rows affected (0.008 sec)
+MariaDB [schooldb]> select * from students;
++----+------------+-----------+------------+
+| id | first_name | last_name | teacher_id |
++----+------------+-----------+------------+
+|  1 | Alice      | Brown     |          1 |
+|  2 | Bob        | Johnson   |          2 |
+|  3 | Alex       | Brown     |          1 |
+|  4 | Sylva      | Brownie   |          3 |
+|  5 | Aline      | Chama     |          3 |
+|  6 | Zizette    | Cameleon  |          2 |
+|  7 | Zizette    | Cameleon  |          3 |
+|  8 | Zizette    | Cameleon  |          1 |
++----+------------+-----------+------------+
+
+MariaDB [schooldb]> INSERT INTO students(id, first_name, last_name, teacher_id)
+    -> VALUES (1, 'Alice', 'Brown', 1),
+    ->        (2, 'Bob', 'Johnson', 2);
+MariaDB [schooldb]> select * from teachers;
++------+------------+-----------+---------+
+| id   | first_name | last_name | subject |
++------+------------+-----------+---------+
+|    1 | John       | Doe       | Math    |
+|    2 | Jane       | Smith     | Science |
+|    3 | layla      | Kara      | Sports  |
++------+------------+-----------+---------+
+3 rows in set (0.000 sec)        I added a 3rd teacher and more students
+Query OK, 2 rows affected (0.003 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+-------------------------
+a. innerjoin
+MariaDB [schooldb]> select students.first_name, teachers.first_name from students inner join teachers on students.teacher_id=teachers.id;
++------------+------------+
+| first_name | first_name |
++------------+------------+
+| Alice      | John       |
+| Bob        | Jane       |
+| Alex       | John       |
+| Sylva      | layla      |
+| Aline      | layla      |
+| Zizette    | Jane       |
+| Zizette    | layla      |
+| Zizette    | John       |
++------------+------------+
+8 rows in set (0.003 sec)
+
+b.left join
+MariaDB [schooldb]>
+MariaDB [schooldb]> select students.first_name, teachers.first_name from students left join teachers on students.teacher_id=teachers.id;
++------------+------------+
+| first_name | first_name |
++------------+------------+
+| Alice      | John       |
+| Bob        | Jane       |
+| Alex       | John       |
+| Sylva      | layla      |
+| Aline      | layla      |
+| Zizette    | Jane       |
+| Zizette    | layla      |
+| Zizette    | John       |
++------------+------------+
+8 rows in set (0.000 sec)
+c. right join
+MariaDB [schooldb]> select students.first_name, teachers.first_name from students right join teachers on students.teacher_id=teachers.id;
++------------+--------------------+
+| first_name | Teacher first_name |
++------------+--------------------+
+| Alice      | John               |
+| Bob        | Jane               |
+| Alex       | John               |
+| Sylva      | layla              |
+| Aline      | layla              |
+| Zizette    | Jane               |
+| Zizette    | layla              |
+| Zizette    | John               |
++------------+--------------------+
+8 rows in set (0.001 sec)
+
+d.MariaDB [schooldb]> select * from students full join teachers;
+MariaDB [schooldb]> select * from students full join teachers;
++----+------------+-----------+------------+------+------------+-----------+---------+
+| id | first_name | last_name | teacher_id | id   | first_name | last_name | subject |
++----+------------+-----------+------------+------+------------+-----------+---------+
+|  1 | Alice      | Brown     |          1 |    1 | John       | Doe       | Math    |
+|  1 | Alice      | Brown     |          1 |    2 | Jane       | Smith     | Science |
+|  1 | Alice      | Brown     |          1 |    3 | layla      | Kara      | Sports  |
+|  2 | Bob        | Johnson   |          2 |    1 | John       | Doe       | Math    |
+|  2 | Bob        | Johnson   |          2 |    2 | Jane       | Smith     | Science |
+|  2 | Bob        | Johnson   |          2 |    3 | layla      | Kara      | Sports  |
+|  3 | Alex       | Brown     |          1 |    1 | John       | Doe       | Math    |
+|  3 | Alex       | Brown     |          1 |    2 | Jane       | Smith     | Science |
+|  3 | Alex       | Brown     |          1 |    3 | layla      | Kara      | Sports  |
+|  4 | Sylva      | Brownie   |          3 |    1 | John       | Doe       | Math    |
+|  4 | Sylva      | Brownie   |          3 |    2 | Jane       | Smith     | Science |
+|  4 | Sylva      | Brownie   |          3 |    3 | layla      | Kara      | Sports  |
+|  5 | Aline      | Chama     |          3 |    1 | John       | Doe       | Math    |
+|  5 | Aline      | Chama     |          3 |    2 | Jane       | Smith     | Science |
+|  5 | Aline      | Chama     |          3 |    3 | layla      | Kara      | Sports  |
+|  6 | Zizette    | Cameleon  |          2 |    1 | John       | Doe       | Math    |
+|  6 | Zizette    | Cameleon  |          2 |    2 | Jane       | Smith     | Science |
+|  6 | Zizette    | Cameleon  |          2 |    3 | layla      | Kara      | Sports  |
+|  7 | Zizette    | Cameleon  |          3 |    1 | John       | Doe       | Math    |
+|  7 | Zizette    | Cameleon  |          3 |    2 | Jane       | Smith     | Science |
+|  7 | Zizette    | Cameleon  |          3 |    3 | layla      | Kara      | Sports  |
+|  8 | Zizette    | Cameleon  |          1 |    1 | John       | Doe       | Math    |
+|  8 | Zizette    | Cameleon  |          1 |    2 | Jane       | Smith     | Science |
+|  8 | Zizette    | Cameleon  |          1 |    3 | layla      | Kara      | Sports  |
+|  9 | Aleko      | lovlove   |       NULL |    1 | John       | Doe       | Math    |
+|  9 | Aleko      | lovlove   |       NULL |    2 | Jane       | Smith     | Science |
+|  9 | Aleko      | lovlove   |       NULL |    3 | layla      | Kara      | Sports  |
++----+------------+-----------+------------+------+------------+-----------+---------+
+27 rows in set (0.000 sec)
