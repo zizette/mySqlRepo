@@ -1,0 +1,14 @@
+Challenge 1: 
+> no_sql_@1.0.0 start
+> nodemon index.js
+
+[nodemon] 3.0.1
+[nodemon] to restart at any time, enter `rs`
+[nodemon] watching path(s): *.*
+[nodemon] watching extensions: js,mjs,cjs,json
+[nodemon] starting `node index.js`
+body-parser deprecated undefined extended: provide extended option index.js:6:17
+listening to our port at http://localhost:5000
+Done 
+
+installed Mongodb on my node NO_SQl project.
